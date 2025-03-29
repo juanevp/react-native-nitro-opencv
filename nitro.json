@@ -1,0 +1,86 @@
+{
+  "$schema": "https://nitro.margelo.com/nitro.schema.json",
+  "cxxNamespace": [
+    "nitroopencv"
+  ],
+  "ios": {
+    "iosModuleName": "NitroOpencv"
+  },
+  "android": {
+    "androidNamespace": [
+      "nitroopencv"
+    ],
+    "androidCxxLibName": "NitroOpencv"
+  },
+  "autolinking": {
+    "CvMat": {
+      "cpp": "HybridMat"
+    },
+    "MatVector": {
+      "cpp": "HybridMatVector"
+    },
+    "CvPoint": {
+      "cpp": "HybridPoint"
+    },
+    "PointVector": {
+      "cpp": "HybridPointVector"
+    },
+    "PointVectorOfVectors": {
+      "cpp": "HybridPointVectorOfVectors"
+    },
+    "CvPoint2f": {
+      "cpp": "HybridPoint2f"
+    },
+    "Point2fVector": {
+      "cpp": "HybridPoint2fVector"
+    },
+    "CvRect": {
+      "cpp": "HybridRect"
+    },
+    "CvRotatedRect": {
+      "cpp": "HybridRotatedRect"
+    },
+    "RectVector": {
+      "cpp": "HybridRectVector"
+    },
+    "CvScalar": {
+      "cpp": "HybridScalar"
+    },
+    "CvSize": {
+      "cpp": "HybridSize"
+    },
+    "Objects": {
+      "cpp": "HybridObjects"
+    },
+    "Core": {
+      "cpp": "HybridCore"
+    },
+    "ColorConversion": {
+      "cpp": "HybridColorConversion"
+    },
+    "Shape": {
+      "cpp": "HybridShape"
+    },
+    "ObjectDetection": {
+      "cpp": "HybridObjectDetection"
+    },
+    "Misc": {
+      "cpp": "HybridMisc"
+    },
+    "ImageTransform": {
+      "cpp": "HybridImageTransform"
+    },
+    "ImageFiltering": {
+      "cpp": "HybridImageFiltering"
+    },
+    "Feature": {
+      "cpp": "HybridFeature"
+    },
+    "Drawing": {
+      "cpp": "HybridDrawing"
+    }
+  },
+  "ignorePaths": [
+    "**/node_modules"
+  ]
+}
