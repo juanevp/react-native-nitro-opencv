@@ -20,20 +20,18 @@ def isNewArchitectureEnabled() {
   return rootProject.hasProperty("newArchEnabled") && rootProject.getProperty("newArchEnabled") == "true"
 }
 
-apply plugin: "com.android.library"
-apply plugin: 'org.jetbrains.kotlin.android'
-apply from: '../nitrogen/generated/android/NitroOpencv+autolinking.gradle'
-
-if (isNewArchitectureEnabled()) {
-  apply plugin: "com.facebook.react"
-}
-
 def getExtOrDefault(name) {
   return rootProject.ext.has(name) ? rootProject.ext.get(name) : project.properties["NitroOpencv_" + name]
 }
 
 def getExtOrIntegerDefault(name) {
   return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties["NitroOpencv_" + name]).toInteger()
+}
+
+def resolveBuildType() {
+  def gradle = getGradle()
+  def tskReqStr = gradle.getStartParameter().getTaskRequests()['args'].toString()
+  return tskReqStr.contains('Release') ? 'release' : 'debug'
 }
 
 static def findNodeModules(baseDir) {
@@ -51,6 +49,13 @@ static def findNodeModules(baseDir) {
   throw new GradleException("react-native-nitro-opencv: Failed to find node_modules/ path!")
 }
 
+apply plugin: "com.android.library"
+apply plugin: 'org.jetbrains.kotlin.android'
+if (isNewArchitectureEnabled()) {
+  apply plugin: "com.facebook.react"
+}
+apply from: '../nitrogen/generated/android/NitroOpencv+autolinking.gradle'
+
 def nodeModules = findNodeModules(projectDir)
 
 android {
@@ -66,8 +71,8 @@ android {
 
     externalNativeBuild {
       cmake {
-        cppFlags "-frtti -fexceptions -Wall -Wextra -fstack-protector-all"
         arguments "-DANDROID_STL=c++_shared",
+          "-DANDROID_TOOLCHAIN=clang",
           "-DNODE_MODULES_DIR=${nodeModules}"
         abiFilters (*reactNativeArchitectures())
 
@@ -90,6 +95,8 @@ android {
   }
 
   packagingOptions {
+    pickFirst '**/*.so'
+    doNotStrip resolveBuildType() == 'debug' ? "**/**/*.so" : ''
     excludes = [
             "META-INF",
             "META-INF/**",
@@ -140,10 +147,6 @@ android {
       }
     }
   }
-
-  packagingOptions {
-    pickFirst '**/*.so'
-  }
 }
 
 repositories {
@@ -162,8 +165,15 @@ dependencies {
   implementation "com.facebook.react:react-native:+"
 
   // Add a dependency on NitroModules
-  //implementation project(":react-native-nitro-modules")
+  implementation project(":react-native-nitro-modules")
 
   //implementation 'org.opencv:opencv:4.11.0'
 }
 
+if (isNewArchitectureEnabled()) {
+  react {
+    jsRootDir = file("../src/")
+    libraryName = "NitroOpenCV"
+    codegenJavaPackageName = "com.margelo.nitro.opencv"
+  }
+}

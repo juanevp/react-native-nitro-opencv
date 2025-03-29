@@ -13,15 +13,18 @@ find_package(ReactAndroid REQUIRED CONFIG)
 find_package(fbjni REQUIRED CONFIG)
 find_package(OpenCV REQUIRED COMPONENTS OpenCV::opencv_java4)
 
-file(GLOB CppSourceFiles "../cpp/*.cpp")
+file(GLOB_RECURSE CppSourceFiles RELATIVE ${CMAKE_SOURCE_DIR}
+  "../cpp/*.c"
+  "../cpp/*.cpp"
+  "cpp/cpp-adapter.cpp"
+)
 
 # Define C++ library and add all sources
 add_library(${PACKAGE_NAME} SHARED
-        src/main/cpp/cpp-adapter.cpp
         ${CppSourceFiles}
 )
 
-# Add Nitrogen specs :)
+# Add Nitrogen specs
 include(${CMAKE_SOURCE_DIR}/../nitrogen/generated/android/NitroOpencv+autolinking.cmake)
 
 # Set up local includes
@@ -38,26 +41,38 @@ include_directories(
 
 find_library(LOG_LIB log)
 
+target_link_libraries(
+  ${PACKAGE_NAME}
+  ${LOG_LIB}
+  android
+  fbjni::fbjni
+  OpenCV::opencv_java4
+)
+
 # Link all libraries together
 if(ReactAndroid_VERSION_MINOR GREATER_EQUAL 76)
   target_link_libraries(
     ${PACKAGE_NAME}
-    ${LOG_LIB}
-    android
     ReactAndroid::reactnative
-    fbjni::fbjni
-    OpenCV::opencv_java4
   )
 else()
   target_link_libraries(
     ${PACKAGE_NAME}
-    ${LOG_LIB}
-    android
     ReactAndroid::folly_runtime
     ReactAndroid::glog
     ReactAndroid::jsi
     ReactAndroid::reactnativejni
-    fbjni::fbjni
-    OpenCV::opencv_java4
   )
 endif()
+
+target_compile_options(
+  ${PACKAGE_NAME}
+  PRIVATE
+  -DLOG_TAG=\"ReactNative\"
+  -fexceptions
+  -frtti
+  -fstack-protector-all
+  -Wall
+  -Wextra
+  -DONANDROID
+)
