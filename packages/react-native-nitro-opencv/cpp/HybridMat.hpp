@@ -14,6 +14,7 @@ namespace margelo::nitro::nitroopencv
         cv::Mat mat;
 
     public:
+        HybridMat() = default;
         HybridMat(cv::Mat &&mat) : HybridCvMatSpec(), mat(mat) {}
 
     public:

@@ -3,7 +3,7 @@
 
 #include "HybridCore.hpp"
 #include "HybridMat.hpp"
-#include "Hybridscalar.hpp"
+#include "HybridScalar.hpp"
 #include "utils.hpp"
 
 namespace margelo::nitro::nitroopencv
@@ -161,17 +161,16 @@ namespace margelo::nitro::nitroopencv
     void HybridCore::checkRange(const std::variant<std::shared_ptr<HybridCvMatSpec>, std::shared_ptr<HybridMatVectorSpec>> &a, bool quiet,
                                 const std::optional<std::shared_ptr<HybridCvPointSpec>> &pos, double minVal, double maxVal)
     {
-        auto &a_ = std::visit([](auto &&arg) -> cv::InputArray
-                              {
+        std::visit([&pos, quiet, minVal, maxVal](auto &&arg)
+                   {
+            auto *pos_ = pos.has_value() ? &asPointRef(pos.value()) : nullptr;
             using T = std::decay_t<decltype(arg)>;
             if constexpr (std::is_same_v<T, std::shared_ptr<HybridCvMatSpec>>) {
-                return asMatRef(arg);
+                cv::checkRange(asMatRef(arg), quiet, pos_, minVal, maxVal);
             } 
             else /*if constexpr (std::is_same_v<T, std::shared_ptr<HybridMatVectorSpec>>)*/ {
-                return asMatVectorRef(arg);
+                cv::checkRange(asMatVectorRef(arg), quiet, pos_, minVal, maxVal);
             } }, a);
-        auto *pos_ = pos.has_value() ? &asPointRef(pos.value()) : nullptr;
-        cv::checkRange(a_, quiet, pos_, minVal, maxVal);
     }
 
     void HybridCore::compare(const std::shared_ptr<HybridCvMatSpec> &src1, const std::shared_ptr<HybridCvMatSpec> &src2,
@@ -185,16 +184,15 @@ namespace margelo::nitro::nitroopencv
 
     void HybridCore::completeSymm(const std::variant<std::shared_ptr<HybridCvMatSpec>, std::shared_ptr<HybridMatVectorSpec>> &m, bool lowerToUpper)
     {
-        auto &m_ = std::visit([](auto &&arg) -> cv::InputOutputArray
-                              {
+        std::visit([lowerToUpper](auto &&arg)
+                   {
             using T = std::decay_t<decltype(arg)>;
             if constexpr (std::is_same_v<T, std::shared_ptr<HybridCvMatSpec>>) {
-                return asMatRef(arg);
+                cv::completeSymm(asMatRef(arg), lowerToUpper);
             } 
             else /*if constexpr (std::is_same_v<T, std::shared_ptr<HybridMatVectorSpec>>)*/ {
-                return asMatVectorRef(arg);
+                cv::completeSymm(asMatVectorRef(arg), lowerToUpper);
             } }, m);
-        cv::completeSymm(m_, lowerToUpper);
     }
 
     void HybridCore::convertFp16(const std::shared_ptr<HybridCvMatSpec> &src, const std::shared_ptr<HybridCvMatSpec> &dst)
@@ -322,15 +320,14 @@ namespace margelo::nitro::nitroopencv
 
     void HybridCore::findNonZero(const std::shared_ptr<HybridCvMatSpec> &src, const std::variant<std::shared_ptr<HybridCvMatSpec>, std::shared_ptr<HybridPointVectorSpec>> &idx)
     {
-        auto &src_ = asMatRef(src);
-        auto &idx_ = std::visit([](auto &&arg) -> cv::OutputArray
-                                {
+        std::visit([&src](auto &&arg)
+                   {
+            auto &src_ = asMatRef(src);
             using T = std::decay_t<decltype(arg)>;
             if constexpr (std::is_same_v<T, std::shared_ptr<HybridCvMatSpec>>) 
-                return asMatRef(arg);
+                cv::findNonZero(src_, asMatRef(arg));
             else /*if constexpr (std::is_same_v<T, std::shared_ptr<HybridPointVectorSpec>>)*/ 
-                return asPointVectorRef(arg); }, idx);
-        cv::findNonZero(src_, idx_);
+                cv::findNonZero(src_, asPointVectorRef(arg)); }, idx);
     }
 
     void HybridCore::flip(const std::shared_ptr<HybridCvMatSpec> &src, const std::shared_ptr<HybridCvMatSpec> &dst, double flipCode)
@@ -455,7 +452,7 @@ namespace margelo::nitro::nitroopencv
         cv::max(src1_, src2_, dst_);
     }
 
-    std::shared_ptr<HybridCvScalarSpec> mean(const std::shared_ptr<HybridCvMatSpec> &src, const std::optional<std::shared_ptr<HybridCvMatSpec>> &mask)
+    std::shared_ptr<HybridCvScalarSpec> HybridCore::mean(const std::shared_ptr<HybridCvMatSpec> &src, const std::optional<std::shared_ptr<HybridCvMatSpec>> &mask)
     {
         auto &src_ = asMatRef(src);
         cv::Scalar result;
@@ -486,6 +483,9 @@ namespace margelo::nitro::nitroopencv
 
     void HybridCore::merge(const std::shared_ptr<HybridMatVectorSpec> &mv, const std::shared_ptr<HybridCvMatSpec> &dst)
     {
+        auto &mv_ = asMatVectorRef(mv);
+        auto &dst_ = asMatRef(dst);
+        cv::merge(mv_, dst_);
     }
 
     void HybridCore::min(const std::shared_ptr<HybridCvMatSpec> &src1, const std::shared_ptr<HybridCvMatSpec> &src2, const std::shared_ptr<HybridCvMatSpec> &dst)
@@ -496,7 +496,7 @@ namespace margelo::nitro::nitroopencv
         cv::min(src1_, src2_, dst_);
     }
 
-    std::tuple<double, double> minMaxLoc(const std::shared_ptr<HybridCvMatSpec> &src, const std::optional<std::shared_ptr<HybridCvMatSpec>> &mask)
+    std::tuple<double, double> HybridCore::minMaxLoc(const std::shared_ptr<HybridCvMatSpec> &src, const std::optional<std::shared_ptr<HybridCvMatSpec>> &mask)
     {
         auto &src_ = asMatRef(src);
         double min = 0;
@@ -570,16 +570,15 @@ namespace margelo::nitro::nitroopencv
 
     void HybridCore::patchNaNs(const std::variant<std::shared_ptr<HybridCvMatSpec>, std::shared_ptr<HybridMatVectorSpec>> &a, double val)
     {
-        auto &a_ = std::visit([](auto &&arg) -> cv::InputOutputArray
-                              {
+        std::visit([val](auto &&arg)
+                   {
             using T = std::decay_t<decltype(arg)>;
             if constexpr (std::is_same_v<T, std::shared_ptr<HybridCvMatSpec>>) {
-                return asMatRef(arg);
+                cv::patchNaNs(asMatRef(arg), val);
             } 
             else /*if constexpr (std::is_same_v<T, std::shared_ptr<HybridMatVectorSpec>>)*/ {
-                return asMatVectorRef(arg);
+                cv::patchNaNs(asMatVectorRef(arg), val);
             } }, a);
-        cv::patchNaNs(a_, val);
     }
 
     void HybridCore::perspectiveTransform(const std::shared_ptr<HybridCvMatSpec> &src, const std::shared_ptr<HybridCvMatSpec> &dst, const std::shared_ptr<HybridCvMatSpec> &m)
@@ -714,7 +713,8 @@ namespace margelo::nitro::nitroopencv
         auto &dst_ = asMatRef(dst);
         if (!mask.has_value())
             cv::subtract(src1_, src2_, dst_);
-        else {
+        else
+        {
             auto &mask_ = asMatRef(mask.value());
             if (!dtype.has_value())
                 cv::subtract(src1_, src2_, dst_, mask_);

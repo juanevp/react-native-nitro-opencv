@@ -14,6 +14,7 @@ namespace margelo::nitro::nitroopencv
         cv::RotatedRect rect;
 
     public:
+        HybridRotatedRect() = default;
         HybridRotatedRect(cv::RotatedRect &&rect) : HybridCvRotatedRectSpec(), rect(rect) {}
 
         cv::RotatedRect* asRotatedRectPtr() {
@@ -22,6 +23,26 @@ namespace margelo::nitro::nitroopencv
 
         cv::RotatedRect& asRotatedRectRef() {
             return rect;
+        }
+
+        virtual double getCenterX() override {
+            return rect.center.x;
+        }
+
+        virtual double getCenterY() override {
+            return rect.center.y;
+        }
+        
+        double getWidth() override {
+            return rect.size.width;
+        }
+        
+        double getHeight() override {
+            return rect.size.height;
+        }
+
+        double getAngle() override {
+            return rect.angle;
         }
 
         RotatedRect toJsValue() override {

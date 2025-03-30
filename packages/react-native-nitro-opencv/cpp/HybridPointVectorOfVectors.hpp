@@ -12,6 +12,7 @@ namespace margelo::nitro::nitroopencv
         std::vector<std::vector<cv::Point>> vec;
 
     public:
+        HybridPointVectorOfVectors() = default;
         HybridPointVectorOfVectors(std::vector<std::vector<cv::Point>> &&vec) : HybridPointVectorOfVectorsSpec(), vec(vec) {}
 
         std::vector<std::vector<cv::Point>>& asPointVectorOfVectorsRef() {

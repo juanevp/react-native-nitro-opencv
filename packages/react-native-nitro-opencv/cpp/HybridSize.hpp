@@ -12,6 +12,7 @@ namespace margelo::nitro::nitroopencv
         cv::Size size;
 
     public:
+        HybridSize() = default;
         HybridSize(cv::Size &&size) : HybridCvSizeSpec(), size(size) {}
 
         cv::Size* asSizePtr() {
@@ -22,6 +23,14 @@ namespace margelo::nitro::nitroopencv
             return size;
         }
 
+        double getWidth() override {
+            return size.width;
+        }
+
+        double getHeight() override {
+            return size.height;
+        }
+  
         Size toJsValue() override {
             return Size(size.width, size.height);
         }

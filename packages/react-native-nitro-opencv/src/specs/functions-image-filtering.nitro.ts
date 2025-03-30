@@ -161,7 +161,7 @@ export interface ImageFiltering extends HybridObject<{ios: "c++"; android: "c++"
         lambd: number,
         gamma: number,
         psi: number,
-        ktype: DataTypes.CV_32F | DataTypes.CV_64F
+        ktype: DataTypes.Cv32F | DataTypes.Cv64F
     ): CvMat;
 
     /**
@@ -170,7 +170,7 @@ export interface ImageFiltering extends HybridObject<{ios: "c++"; android: "c++"
      * @param sigma Gaussian standard deviation. If it is non-positive, it is computed from ksize as sigma = 0.3*((ksize-1)*0.5 - 1) + 0.8.
      * @param ktype Type of filter coefficients. It can be CV_32F or CV_64F .
      */
-    getGaussianKernel(ksize: number, sigma: number, ktype: DataTypes.CV_32F | DataTypes.CV_64F): CvMat;
+    getGaussianKernel(ksize: number, sigma: number, ktype: DataTypes.Cv32F | DataTypes.Cv64F): CvMat;
 
     /**
      * Returns a structuring element of the specified size and shape for morphological operations.

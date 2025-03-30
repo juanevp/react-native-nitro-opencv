@@ -12,6 +12,7 @@ namespace margelo::nitro::nitroopencv
         std::vector<cv::Mat> vec;
 
     public:
+        HybridMatVector() = default;
         HybridMatVector(std::vector<cv::Mat> &&vec) : HybridMatVectorSpec(), vec(vec) {}
 
         std::vector<cv::Mat>& asMatVectorRef() {

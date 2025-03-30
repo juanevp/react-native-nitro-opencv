@@ -77,7 +77,7 @@ namespace margelo::nitro::nitroopencv
 
     std::shared_ptr<HybridCvRotatedRectSpec> HybridObjects::createRotatedRect(double centerX, double centerY, double width, double height, double angle)
     {
-        return std::make_shared<HybridRotatedRect>(cv::Point(centerX, centerY), cv::Size(width, height), angle);
+        return std::make_shared<HybridRotatedRect>(cv::RotatedRect(cv::Point2f(centerX, centerY), cv::Size2f(width, height), angle));
     }
 
     std::shared_ptr<HybridCvSizeSpec> HybridObjects::createSize(double width, double height)

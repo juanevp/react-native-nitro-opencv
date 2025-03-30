@@ -14,7 +14,8 @@ namespace margelo::nitro::nitroopencv
         cv::Rect rect;
 
     public:
-    HybridRect(cv::Rect &&rect) : HybridCvRectSpec(), rect(rect) {}
+        HybridRect() = default;
+        HybridRect(cv::Rect &&rect) : HybridCvRectSpec(), rect(rect) {}
 
         cv::Rect* asRectPtr() {
             return &rect;
@@ -23,6 +24,23 @@ namespace margelo::nitro::nitroopencv
         cv::Rect& asRectRef() {
             return rect;
         }
+
+        double getX() override {
+            return rect.x;
+        }
+
+        double getY() override {
+            return rect.y;
+        }
+        
+        double getWidth() override {
+            return rect.width;
+        }
+        
+        double getHeight() override {
+            return rect.height;
+        }
+        
 
         Rect toJsValue() override {
             return Rect(rect.x, rect.y, rect.width, rect.height);

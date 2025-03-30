@@ -11,68 +11,67 @@ namespace margelo::nitro::nitroopencv
     void HybridShape::approxPolyDP(const std::variant<std::shared_ptr<HybridCvMatSpec>, std::shared_ptr<HybridMatVectorSpec>, std::shared_ptr<HybridPointVectorSpec>> &curve,
                                    const std::variant<std::shared_ptr<HybridCvMatSpec>, std::shared_ptr<HybridPointVectorSpec>> &approxCurve, double epsilon, bool closed)
     {
-        auto &input = std::visit([](auto&& arg) -> cv::InputArray {
+        auto visitOutput = [&approxCurve, epsilon, closed](cv::InputArray input) 
+        {
+            std::visit([&input, epsilon, closed](auto&& arg) {
+                using T = std::decay_t<decltype(arg)>;
+                if constexpr (std::is_same_v<T, std::shared_ptr<HybridCvMatSpec>>) {
+                    cv::approxPolyDP(input, asMatRef(arg), epsilon, closed);
+                } 
+                else /*if constexpr (std::is_same_v<T, std::shared_ptr<HybridPointVectorSpec>>)*/ {
+                    cv::approxPolyDP(input, asPointVectorRef(arg), epsilon, closed);
+                } 
+            }, approxCurve);
+        };
+
+        std::visit([&visitOutput](auto&& arg) {
             using T = std::decay_t<decltype(arg)>;
             if constexpr (std::is_same_v<T, std::shared_ptr<HybridCvMatSpec>>) {
-                return asMatRef(arg);
+                visitOutput(asMatRef(arg));
             } 
             else if constexpr (std::is_same_v<T, std::shared_ptr<HybridMatVectorSpec>>) {
-                return asMatVectorRef(arg);
+                visitOutput(asMatVectorRef(arg));
             } 
             else /*if constexpr (std::is_same_v<T, std::shared_ptr<HybridPointVectorSpec>>)*/ {
-                return asPointVectorRef(arg);
+                visitOutput(asPointVectorRef(arg));
             } 
         }, curve);
-
-        auto &output = std::visit([](auto&& arg) -> cv::OutputArray {
-            using T = std::decay_t<decltype(arg)>;
-            if constexpr (std::is_same_v<T, std::shared_ptr<HybridCvMatSpec>>) {
-                return asMatRef(arg);
-            } 
-            else /*if constexpr (std::is_same_v<T, std::shared_ptr<HybridPointVectorSpec>>)*/ {
-                return asPointVectorRef(arg);
-            } 
-        }, approxCurve);
-
-        cv::approxPolyDP(input, output, epsilon, closed);
     }
 
     double HybridShape::arcLength(const std::variant<std::shared_ptr<HybridCvMatSpec>, std::shared_ptr<HybridMatVectorSpec>, std::shared_ptr<HybridPointVectorSpec>> &curve,
                                   bool closed)
     {
-        auto &input = std::visit([](auto&& arg) -> cv::InputArray {
+        return std::visit([closed](auto&& arg) -> double {
             using T = std::decay_t<decltype(arg)>;
             if constexpr (std::is_same_v<T, std::shared_ptr<HybridCvMatSpec>>) {
-                return asMatRef(arg);
+                return cv::arcLength(asMatRef(arg), closed);
             } 
             else if constexpr (std::is_same_v<T, std::shared_ptr<HybridMatVectorSpec>>) {
-                return asMatVectorRef(arg);
+                return cv::arcLength(asMatVectorRef(arg), closed);
             } 
             else /*if constexpr (std::is_same_v<T, std::shared_ptr<HybridPointVectorSpec>>)*/ {
-                return asPointVectorRef(arg);
+                return cv::arcLength(asPointVectorRef(arg), closed);
             } 
         }, curve);
-
-        return cv::arcLength(input, closed);
     }
 
     std::shared_ptr<HybridCvRectSpec> HybridShape::boundingRect(
         const std::variant<std::shared_ptr<HybridCvMatSpec>, std::shared_ptr<HybridMatVectorSpec>, std::shared_ptr<HybridPointVectorSpec>> &array)
     {
-        auto &input = std::visit([](auto&& arg) -> cv::InputArray {
+        auto rect = std::visit([](auto&& arg) -> cv::Rect {
             using T = std::decay_t<decltype(arg)>;
             if constexpr (std::is_same_v<T, std::shared_ptr<HybridCvMatSpec>>) {
-                return asMatRef(arg);
+                return cv::boundingRect(asMatRef(arg));
             } 
             else if constexpr (std::is_same_v<T, std::shared_ptr<HybridMatVectorSpec>>) {
-                return asMatVectorRef(arg);
+                return cv::boundingRect(asMatVectorRef(arg));
             } 
             else /*if constexpr (std::is_same_v<T, std::shared_ptr<HybridPointVectorSpec>>)*/ {
-                return asPointVectorRef(arg);
+                return cv::boundingRect(asPointVectorRef(arg));
             } 
         }, array);
 
-        return std::make_shared<HybridRect>(cv::boundingRect(input));
+        return std::make_shared<HybridRect>(std::move(rect));
     }
 
     double HybridShape::connectedComponents(const std::shared_ptr<HybridCvMatSpec> &image, const std::shared_ptr<HybridCvMatSpec> &labels)
@@ -96,20 +95,19 @@ namespace margelo::nitro::nitroopencv
     double HybridShape::contourArea(const std::variant<std::shared_ptr<HybridCvMatSpec>, std::shared_ptr<HybridMatVectorSpec>, std::shared_ptr<HybridPointVectorSpec>> &contour,
                                     std::optional<bool> oriented)
     {
-        auto &input = std::visit([](auto&& arg) -> cv::InputArray {
+        auto oriented_resolved = oriented.value_or(false);
+        return std::visit([oriented_resolved](auto&& arg) -> double {
             using T = std::decay_t<decltype(arg)>;
             if constexpr (std::is_same_v<T, std::shared_ptr<HybridCvMatSpec>>) {
-                return asMatRef(arg);
+                return cv::contourArea(asMatRef(arg), oriented_resolved);
             } 
             else if constexpr (std::is_same_v<T, std::shared_ptr<HybridMatVectorSpec>>) {
-                return asMatVectorRef(arg);
+                return cv::contourArea(asMatVectorRef(arg), oriented_resolved);
             } 
             else /*if constexpr (std::is_same_v<T, std::shared_ptr<HybridPointVectorSpec>>)*/ {
-                return asPointVectorRef(arg);
+                return cv::contourArea(asPointVectorRef(arg), oriented_resolved);
             } 
         }, contour);
-
-        return cv::contourArea(input, oriented.value_or(false));
     }
 
     void HybridShape::convexHull(const std::shared_ptr<HybridCvMatSpec> &points, const std::shared_ptr<HybridCvMatSpec> &hull)
@@ -134,17 +132,17 @@ namespace margelo::nitro::nitroopencv
                                    const std::variant<std::shared_ptr<HybridMatVectorSpec>, std::shared_ptr<HybridPointVectorOfVectorsSpec>> &contours,
                                    RetrievalModes mode, ContourApproximationModes method)
     {
-        auto &image_ = asMatRef(image);
-        auto &contours_ = std::visit([](auto&& arg) -> cv::OutputArray {
+        std::visit([&image, mode, method](auto&& arg) {
+            auto &image_ = asMatRef(image);
             using T = std::decay_t<decltype(arg)>;
             if constexpr (std::is_same_v<T, std::shared_ptr<HybridMatVectorSpec>>) {
-                return asMatVectorRef(arg);
+                cv::findContours(image_, asMatVectorRef(arg), (int)mode, (int)method);
             } 
             else /*if constexpr (std::is_same_v<T, std::shared_ptr<HybridPointVectorOfVectorsSpec>>)*/ {
-                return asPointVectorOfVectorsRef(arg);
+                cv::findContours(image_, asPointVectorOfVectorsRef(arg), (int)mode, (int)method);
             } 
         }, contours);
-        cv::findContours(image_, contours_, (int)mode, (int)method);
+        
     }
 
     void HybridShape::fitLine(const std::shared_ptr<HybridCvMatSpec> &points, const std::shared_ptr<HybridCvMatSpec> &line, DistanceTypes disType,
@@ -165,13 +163,13 @@ namespace margelo::nitro::nitroopencv
     {
         auto &contour1_ = asMatRef(contour1);
         auto &contour2_ = asMatRef(contour2);
-        auto result = cv::matchShapes(contour1_, contour2_, (int)method, parameter);
+        return cv::matchShapes(contour1_, contour2_, (int)method, parameter);
     }
 
     std::shared_ptr<HybridCvRotatedRectSpec> HybridShape::minAreaRect(const std::shared_ptr<HybridCvMatSpec> &points)
     {
         auto &points_ = asMatRef(points);
         auto rect = cv::minAreaRect(points_);
-        return std::make_shared<HybridRotatedRect>(rect);
+        return std::make_shared<HybridRotatedRect>(std::move(rect));
     }
 }

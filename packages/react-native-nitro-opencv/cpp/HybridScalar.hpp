@@ -14,6 +14,7 @@ namespace margelo::nitro::nitroopencv
         cv::Scalar scalar;
 
     public:
+        HybridScalar() = default;
         HybridScalar(cv::Scalar &&scalar) : HybridCvScalarSpec(), scalar(scalar) {}
 
         cv::Scalar* asScalarPtr() {
