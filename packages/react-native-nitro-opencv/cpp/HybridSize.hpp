@@ -12,7 +12,7 @@ namespace margelo::nitro::nitroopencv
         cv::Size size;
 
     public:
-        HybridSize(cv::Size &&resizect) : HybridCvSizeSpec(), size(size) {}
+        HybridSize(cv::Size &&size) : HybridCvSizeSpec(), size(size) {}
 
         cv::Size* asSizePtr() {
             return &size;

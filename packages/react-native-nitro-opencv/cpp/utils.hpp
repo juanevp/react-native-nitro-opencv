@@ -12,7 +12,10 @@
 #include "HybridSize.hpp"
 #include "HybridMatVectorSpec.hpp"
 #include "HybridPointVectorSpec.hpp"
-#include "HybridVectors.hpp"
+#include "HybridMatVector.hpp"
+#include "HybridPoint2f.hpp"
+#include "HybridPointVector.hpp"
+#include "HybridPointVectorOfVectors.hpp"
 
 namespace margelo::nitro::nitroopencv {
     inline cv::Mat& asMatRef(std::shared_ptr<HybridCvMatSpec> ptr) {

@@ -5,13 +5,14 @@
 
 #include "ConvertImage.hpp"
 #include "HybridMat.hpp"
-#include "HybridVectors.hpp"
 #include "HybridPoint.hpp"
 #include "HybridRect.hpp"
 #include "HybridRotatedRect.hpp"
 #include "HybridScalar.hpp"
 #include "HybridSize.hpp"
 #include "HybridObjects.hpp"
+#include "HybridPoint2fVector.hpp"
+#include "HybridRectVector.hpp"
 #include "utils.hpp"
 
 namespace margelo::nitro::nitroopencv
@@ -171,20 +172,19 @@ namespace margelo::nitro::nitroopencv
 
         cv::Mat mat(rows, cols, modeType);
         memcpy(mat.data, input->data(), (int)rows * (int)cols * (int)channels * typeSize);
-        return std::make_shared<cv::Mat>(std::move(mat));
+        return std::make_shared<HybridMat>(std::move(mat));
     }
 
     std::shared_ptr<HybridCvMatSpec> HybridObjects::base64ToMat(const std::string &data)
     {
-        auto mat = ImageConverter::str2mat(base64);
-        return std::make_shared<cv::Mat>(std::move(mat));
+        auto mat = ImageConverter::str2mat(data);
+        return std::make_shared<HybridMat>(std::move(mat));
     }
 
     std::shared_ptr<ArrayBuffer> HybridObjects::matToArrayBuffer(const std::shared_ptr<HybridCvMatSpec> &mat)
     {
         auto &mat_ = asMatRef(mat);
-        auto size = mat_.cols * mat_.rows * mat_.channels() * mat_.elemSize1;
-        return std::make_shared(ArrayBuffer::copy((uint8_t *)mat.data, size));
+        auto size = mat_.cols * mat_.rows * mat_.channels() * mat_.elemSize1();
+        return ArrayBuffer::copy((uint8_t *)mat_.data, size);
     }
-
 }

@@ -2,23 +2,23 @@
 
 #include <opencv2/core/types.hpp>
 
-#include "HybridCvPointSpec.hpp"
+#include "HybridCvPoint2fSpec.hpp"
 
 namespace margelo::nitro::nitroopencv
 {
-    class HybridPoint : public virtual HybridCvPointSpec
+    class HybridPoint2f : public virtual HybridCvPoint2fSpec
     {
     private:
-        cv::Point point;
+        cv::Point2f point;
 
     public:
-        HybridPoint(cv::Point &&point) : HybridCvPointSpec(), point(point) {}
+        HybridPoint2f(cv::Point2f &&point) : HybridCvPoint2fSpec(), point(point) {}
 
-        cv::Point* asPointPtr() {
+        cv::Point2f* asPoint2fPtr() {
             return &point;
         }
 
-        cv::Point& asPointRef() {
+        cv::Point2f& asPoint2fRef() {
             return point;
         }
 
@@ -26,4 +26,5 @@ namespace margelo::nitro::nitroopencv
             return Point(point.x, point.y);
         }
     };
+
 }

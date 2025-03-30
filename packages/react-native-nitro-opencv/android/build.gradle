@@ -152,9 +152,6 @@ android {
 repositories {
   mavenCentral()
   google()
-  maven {
-    url = "../opencv-builds/android/output/maven_repo"
-  }
 }
 
 
