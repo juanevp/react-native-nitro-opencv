@@ -7,25 +7,7 @@
   "types": "lib/index.d.ts",
   "react-native": "src/index",
   "source": "src/index",
-  "files": [
-    "src",
-    "react-native.config.js",
-    "lib",
-    "nitrogen",
-    "android/build.gradle",
-    "android/gradle.properties",
-    "android/CMakeLists.txt",
-    "android/src",
-    "ios/**/*.h",
-    "ios/**/*.m",
-    "ios/**/*.mm",
-    "ios/**/*.cpp",
-    "ios/**/*.swift",
-    "app.plugin.js",
-    "*.podspec",
-    "README.md"
-  ],
-  "scripts": {
+   "scripts": {
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf android/build node_modules/**/android/build lib",
     "lint": "eslint \"**/*.{js,ts,tsx}\" --fix",
