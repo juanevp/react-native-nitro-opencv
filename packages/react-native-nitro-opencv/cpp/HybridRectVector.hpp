@@ -12,10 +12,11 @@ namespace margelo::nitro::nitroopencv
         std::vector<cv::Rect> vec;
 
     public:
-        HybridRectVector() = default;
-        HybridRectVector(std::vector<cv::Rect> &&vec) : HybridRectVectorSpec(), vec(vec) {}
+        HybridRectVector() : HybridObject(TAG) {}
+        HybridRectVector(std::vector<cv::Rect> &&vec) : HybridObject(TAG), vec(vec) {}
 
-        std::vector<cv::Rect>& asRectVectorRef() {
+        std::vector<cv::Rect> &asRectVectorRef()
+        {
             return vec;
         }
 

@@ -1,24 +1,17 @@
 import {NitroModules} from "react-native-nitro-modules";
 
-import type {DataTypes} from "./specs/data-types";
 import type {ColorConversion} from "./specs/functions-color-conversion.nitro";
 import type {Core} from "./specs/functions-core.nitro";
+import type {Drawing} from "./specs/functions-drawing.nitro";
+import type {Feature} from "./specs/functions-feature.nitro";
+import type {ImageFiltering} from "./specs/functions-image-filtering.nitro";
 import type {ImageTransform} from "./specs/functions-image-transform.nitro";
 import type {Misc} from "./specs/functions-misc.nitro";
 import type {ObjectDetection} from "./specs/functions-object-detection.nitro";
 import type {Shape} from "./specs/functions-shape.nitro";
-import type {MatVector} from "./specs/mat-vector.nitro";
 import type {CvMat} from "./specs/mat.nitro";
 import type {Objects} from "./specs/objects.nitro";
-import type {Point2fVector, PointVector, PointVectorOfVectors} from "./specs/point-vector.nitro";
-import type {CvPoint, CvPoint2f} from "./specs/point.nitro";
-import type {RectVector} from "./specs/rect-vector.nitro";
-import type {CvRect} from "./specs/rect.nitro";
 import type {CvScalar} from "./specs/scalar.nitro";
-import type {CvSize} from "./specs/size.nitro";
-import type { ImageFiltering } from "./specs/functions-image-filtering.nitro";
-import type { Feature } from "./specs/functions-feature.nitro";
-import type { Drawing } from "./specs/functions-drawing.nitro";
 
 export * from "./specs/constants-color-conversions-codes";
 export * from "./specs/constants-core";
@@ -45,7 +38,12 @@ export * from "./specs/scalar.nitro";
 export * from "./specs/size.nitro";
 
 const core = NitroModules.createHybridObject<Core>("Core");
-const objects_ = NitroModules.createHybridObject<Objects>("Objects");
+const objects: Omit<Objects, "createScalar"> & {
+    createScalar(): CvScalar;
+    createScalar(a: number): CvScalar;
+    createScalar(a: number, b: number, c: number): CvScalar;
+    createScalar(a: number, b: number, c: number, d: number): CvScalar;
+} = NitroModules.createHybridObject<Objects>("Objects");
 const colorConversion = NitroModules.createHybridObject<ColorConversion>("ColorConversion");
 const shape = NitroModules.createHybridObject<Shape>("Shape");
 const objectDetection = NitroModules.createHybridObject<ObjectDetection>("ObjectDetection");
@@ -55,57 +53,47 @@ const imageFiltering = NitroModules.createHybridObject<ImageFiltering>("ImageFil
 const feature = NitroModules.createHybridObject<Feature>("Feature");
 const drawing = NitroModules.createHybridObject<Drawing>("Drawing");
 
-function createMat(rows: number, cols: number, dataType: DataTypes, data?: number[]): CvMat {
-    return objects_.createMat(rows, cols, dataType, data);
-}
+const boxedCore = NitroModules.box(core);
+const boxedObjects = NitroModules.box(objects);
+const boxedColorConversion = NitroModules.box(colorConversion);
+const boxedShape = NitroModules.box(shape);
+const boxedObjectDetection = NitroModules.box(objectDetection);
+const boxedMisc = NitroModules.box(misc);
+const boxedImageTransform = NitroModules.box(imageTransform);
+const boxedImageFiltering = NitroModules.box(imageFiltering);
+const boxedFeature = NitroModules.box(feature);
+const boxedDrawing = NitroModules.box(drawing);
 
-function createMatVector(): MatVector {
-    return objects_.createMatVector();
-}
+export const OpenCV = {
+    core,
+    objects,
+    colorConversion,
+    shape,
+    objectDetection,
+    misc,
+    imageTransform,
+    imageFiltering,
+    feature,
+    drawing,
+} as const;
 
-function createPoint(x: number, y: number): CvPoint {
-    return objects_.createPoint(x, y);
-}
-
-function createPointVector(): PointVector {
-    return objects_.createPointVector();
-}
-
-function createPointVectorOfVectors(): PointVectorOfVectors {
-    return objects_.createPointVectorOfVectors();
-}
-
-function createPoint2f(x: number, y: number): CvPoint2f {
-    return objects_.createPoint2f(x, y);
-}
-
-function createPoint2fVector(): Point2fVector {
-    return objects_.createPoint2fVector();
-}
-
-function createRect(x: number, y: number, width: number, height: number): CvRect {
-    return objects_.createRect(x, y, width, height);
-}
-
-function createRectVector(): RectVector {
-    return objects_.createRectVector();
-}
-
-function createSize(width: number, height: number): CvSize {
-    return objects_.createSize(width, height);
-}
-
-function createScalar(): CvScalar;
-function createScalar(a: number): CvScalar;
-function createScalar(a: number, b: number, c: number): CvScalar;
-function createScalar(a: number, b: number, c: number, d: number): CvScalar;
-function createScalar(a?: number, b?: number, c?: number, d?: number): CvScalar {
-    return objects_.createScalar(a, b, c, d);
-}
-
-function base64ToMat(data: string): CvMat {
-    return objects_.base64ToMat(data);
-}
+export const boxedOpenCV = {
+    unbox(): typeof OpenCV {
+        "worklet";
+        return {
+            core: boxedCore.unbox(),
+            objects: boxedObjects.unbox(),
+            colorConversion: boxedColorConversion.unbox(),
+            shape: boxedShape.unbox(),
+            objectDetection: boxedObjectDetection.unbox(),
+            misc: boxedMisc.unbox(),
+            imageTransform: boxedImageTransform.unbox(),
+            imageFiltering: boxedImageFiltering.unbox(),
+            feature: boxedFeature.unbox(),
+            drawing: boxedDrawing.unbox(),
+        } as const;
+    },
+};
 
 export type BufferType = {
     uint8: Uint8Array;
@@ -122,14 +110,16 @@ export type ImportBufferType = Omit<BufferType, "uint32">;
 //type BufferItemType = keyof BufferType;
 type ImportBufferItemType = keyof ImportBufferType;
 
-function bufferToMat(
+export function bufferToMat(
+    openCV: typeof OpenCV,
     rows: number,
     cols: number,
     channels: 1 | 3 | 4,
     input: ImportBufferType[ImportBufferItemType]
 ): CvMat {
+    "worklet";
     const buffer = input.buffer;
-    if (buffer instanceof SharedArrayBuffer) {
+    if (!(buffer instanceof ArrayBuffer)) {
         throw new Error("SharedArrayBuffer not supported");
     }
     let itemType: ImportBufferItemType;
@@ -150,19 +140,12 @@ function bufferToMat(
     } else {
         throw new Error(`Unsupported buffer type`);
     }
-    return objects_.arrayBufferToMat(itemType, rows, cols, channels, buffer);
+    return openCV.objects.arrayBufferToMat(itemType, rows, cols, channels, buffer);
 }
 
-function matToBuffer<T extends keyof BufferType>(
-    mat: CvMat,
-    type: T
-): {
-    cols: number;
-    rows: number;
-    channels: number;
-    buffer: BufferType[T];
-} {
-    const result = objects_.matToArrayBuffer(mat);
+export function matToBuffer<T extends keyof BufferType>(openCV: typeof OpenCV, mat: CvMat, type: T): BufferType[T] {
+    "worklet";
+    const result = openCV.objects.matToArrayBuffer(mat);
     if (type === "uint8") {
         return new Uint8Array(result) as any;
     } else if (type === "uint16") {
@@ -182,33 +165,3 @@ function matToBuffer<T extends keyof BufferType>(
     }
     throw new Error(`Unsupported buffer type`);
 }
-
-const objects = {
-    createMat,
-    createMatVector,
-    createPoint,
-    createPointVector,
-    createPointVectorOfVectors,
-    createPoint2f,
-    createPoint2fVector,
-    createRect,
-    createRectVector,
-    createSize,
-    createScalar,
-    bufferToMat,
-    base64ToMat,
-    matToBuffer,
-};
-
-export const OpenCV = {
-    core,
-    objects,
-    colorConversion,
-    shape,
-    objectDetection,
-    misc,
-    imageTransform,
-    imageFiltering,
-    feature,
-    drawing,
-} as const;

@@ -1,7 +1,7 @@
 import {AlphaType, Canvas, ColorType, Image, Skia, type SkData, type SkImage} from "@shopify/react-native-skia";
 import {useEffect} from "react";
 import {SafeAreaView, StyleSheet, Text, View} from "react-native";
-import {OpenCV} from "react-native-nitro-opencv";
+import {boxedOpenCV, bufferToMat, matToBuffer} from "react-native-nitro-opencv";
 import {useSharedValue} from "react-native-reanimated";
 import {Camera, useCameraDevice, useCameraPermission, useFrameProcessor} from "react-native-vision-camera";
 import {useRunOnJS} from "react-native-worklets-core";
@@ -114,9 +114,10 @@ export function CameraPassthrough() {
                 rotation: "90deg",
             });
 
-            const frameMat = OpenCV.objects.bufferToMat(HEIGHT, WIDTH, 4, resized);
-            const output = OpenCV.objects.matToBuffer(frameMat, "uint8");
-            const data = Skia.Data.fromBytes(output.buffer);
+            const OpenCV = boxedOpenCV.unbox();
+            const frameMat = bufferToMat(OpenCV, HEIGHT, WIDTH, 4, resized);
+            const output = matToBuffer(OpenCV, frameMat, "uint8");
+            const data = Skia.Data.fromBytes(output);
 
             updatePreviewImageFromData(data, TARGET_FORMAT).then(() => {
                 data.dispose();

@@ -12,10 +12,11 @@ namespace margelo::nitro::nitroopencv
         std::vector<cv::Point2f> vec;
 
     public:
-        HybridPoint2fVector() = default;
-        HybridPoint2fVector(std::vector<cv::Point2f> &&vec) : HybridPoint2fVectorSpec(), vec(vec) {}
+        HybridPoint2fVector() : HybridObject(TAG) {}
+        HybridPoint2fVector(std::vector<cv::Point2f> &&vec) : HybridObject(TAG), vec(vec) {}
 
-        std::vector<cv::Point2f>& asPoint2fVectorRef() {
+        std::vector<cv::Point2f> &asPoint2fVectorRef()
+        {
             return vec;
         }
 

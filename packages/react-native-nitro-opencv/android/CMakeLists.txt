@@ -21,7 +21,7 @@ find_package(OpenCV REQUIRED)
 file(GLOB_RECURSE CppSourceFiles RELATIVE ${CMAKE_SOURCE_DIR}
   "../cpp/*.c"
   "../cpp/*.cpp"
-  "cpp/cpp-adapter.cpp"
+  "src/main/cpp/cpp-adapter.cpp"
 )
 
 # Define C++ library and add all sources

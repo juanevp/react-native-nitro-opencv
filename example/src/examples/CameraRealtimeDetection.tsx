@@ -2,10 +2,11 @@ import {PaintStyle, Skia} from "@shopify/react-native-skia";
 import {useEffect} from "react";
 import {StyleSheet, Text} from "react-native";
 import {
+    boxedOpenCV,
+    bufferToMat,
     ColorConversionCodes,
     ContourApproximationModes,
     DataTypes,
-    OpenCV,
     RetrievalModes,
     type CvRect,
 } from "react-native-nitro-opencv";
@@ -41,7 +42,8 @@ export function CameraRealtimeDetection() {
             dataType: "uint8",
         });
 
-        const src = OpenCV.objects.bufferToMat(height, width, 3, resized);
+        const OpenCV = boxedOpenCV.unbox();
+        const src = bufferToMat(OpenCV, height, width, 3, resized);
         const dst = OpenCV.objects.createMat(0, 0, DataTypes.Cv8U);
 
         const lowerBound = OpenCV.objects.createScalar(30, 60, 60);

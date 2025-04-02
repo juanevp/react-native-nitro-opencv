@@ -12,26 +12,31 @@ namespace margelo::nitro::nitroopencv
         cv::Point2f point;
 
     public:
-        HybridPoint2f() = default;
-        HybridPoint2f(cv::Point2f &&point) : HybridCvPoint2fSpec(), point(point) {}
+        HybridPoint2f() : HybridObject(TAG) {}
+        HybridPoint2f(cv::Point2f &&point) : HybridObject(TAG), point(point) {}
 
-        cv::Point2f* asPoint2fPtr() {
+        cv::Point2f *asPoint2fPtr()
+        {
             return &point;
         }
 
-        cv::Point2f& asPoint2fRef() {
+        cv::Point2f &asPoint2fRef()
+        {
             return point;
         }
 
-        double getX() override {
+        double getX() override
+        {
             return point.x;
         }
-        
-        double getY() override {
+
+        double getY() override
+        {
             return point.y;
         }
 
-        Point toJsValue() override {
+        Point toJsValue() override
+        {
             return Point(point.x, point.y);
         }
     };

@@ -11,9 +11,9 @@ namespace margelo::nitro::nitroopencv
     class HybridObjectDetection : public HybridObjectDetectionSpec
     {
     public:
-        HybridObjectDetection() : HybridObjectDetectionSpec() {}
+        HybridObjectDetection() : HybridObject(TAG) {}
 
-        void matchTemplate(const std::shared_ptr<HybridCvMatSpec>& image, const std::shared_ptr<HybridCvMatSpec>& templ, const std::shared_ptr<HybridCvMatSpec>& result, TemplateMatchModes method, const std::shared_ptr<HybridCvMatSpec>& mask) override;
-        PhaseCorrelationResult phaseCorrelate(const std::shared_ptr<HybridCvMatSpec>& src1, const std::shared_ptr<HybridCvMatSpec>& src2, const std::optional<std::shared_ptr<HybridCvMatSpec>>& window) override;
-   };
+        void matchTemplate(const std::shared_ptr<HybridCvMatSpec> &image, const std::shared_ptr<HybridCvMatSpec> &templ, const std::shared_ptr<HybridCvMatSpec> &result, TemplateMatchModes method, const std::shared_ptr<HybridCvMatSpec> &mask) override;
+        PhaseCorrelationResult phaseCorrelate(const std::shared_ptr<HybridCvMatSpec> &src1, const std::shared_ptr<HybridCvMatSpec> &src2, const std::optional<std::shared_ptr<HybridCvMatSpec>> &window) override;
+    };
 }

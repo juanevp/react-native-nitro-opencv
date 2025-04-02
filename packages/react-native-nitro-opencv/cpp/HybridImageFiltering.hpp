@@ -13,7 +13,7 @@ namespace margelo::nitro::nitroopencv
     class HybridImageFiltering : public HybridImageFilteringSpec
     {
     public:
-        HybridImageFiltering() : HybridImageFilteringSpec() {}
+        HybridImageFiltering() : HybridObject(TAG) {}
 
         void bilateralFilter(const std::shared_ptr<HybridCvMatSpec> &src, const std::shared_ptr<HybridCvMatSpec> &dst, double d, double sigmaColor, double sigmaSpace, BorderTypes borderType) override;
         void blur(const std::shared_ptr<HybridCvMatSpec> &src, const std::shared_ptr<HybridCvMatSpec> &dst, const std::shared_ptr<HybridCvSizeSpec> &ksize, const std::shared_ptr<HybridCvPointSpec> &anchor, BorderTypes borderType) override;

@@ -19,14 +19,15 @@
 using namespace std;
 using namespace cv;
 
-class ImageConverter {
+class ImageConverter
+{
 public:
-    static cv::Mat str2mat(const string& imageBase64);
-    static string mat2str(const Mat& img, std::string &format);
+    static cv::Mat str2mat(const string &imageBase64);
+    static string mat2str(const Mat &img, std::string &format);
 
 private:
-    static std::string base64_encode(uchar const* bytesToEncode, unsigned int inLen);
-    static std::string base64_decode(std::string const& encodedString);
+    static std::string base64_encode(uchar const *bytesToEncode, unsigned int inLen);
+    static std::string base64_decode(std::string const &encodedString);
 };
 
 #endif

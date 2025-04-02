@@ -11,7 +11,7 @@ namespace margelo::nitro::nitroopencv
     {
     private:
     public:
-        HybridObjects() : HybridObjectsSpec() {}
+        HybridObjects() : HybridObject(TAG) {}
 
         std::shared_ptr<HybridCvMatSpec> createMat(double rows, double cols, DataTypes dataType, const std::optional<std::vector<double>> &data) override;
         std::shared_ptr<HybridMatVectorSpec> createMatVector() override;

@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {Button, Image, SafeAreaView} from "react-native";
 import {launchImageLibrary, type Asset} from "react-native-image-picker";
-import {BorderTypes, DataTypes, OpenCV} from "react-native-nitro-opencv";
+import {BorderTypes, DataTypes, boxedOpenCV} from "react-native-nitro-opencv";
 import {useRunOnJS, useWorklet} from "react-native-worklets-core";
 
 export function ImageExample() {
@@ -23,6 +23,7 @@ export function ImageExample() {
     const worklet = useWorklet("default", () => {
         "worklet";
         if (photo?.base64) {
+            const OpenCV = boxedOpenCV.unbox();
             const src = OpenCV.objects.base64ToMat(photo.base64);
             const dst = OpenCV.objects.createMat(0, 0, DataTypes.Cv8U);
             const kernel = OpenCV.objects.createSize(20, 20);

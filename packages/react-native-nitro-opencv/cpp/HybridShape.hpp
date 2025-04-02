@@ -13,7 +13,7 @@ namespace margelo::nitro::nitroopencv
     class HybridShape : public HybridShapeSpec
     {
     public:
-        HybridShape() : HybridShapeSpec() {}
+        HybridShape() : HybridObject(TAG) {}
 
         void approxPolyDP(const std::variant<std::shared_ptr<HybridCvMatSpec>, std::shared_ptr<HybridMatVectorSpec>, std::shared_ptr<HybridPointVectorSpec>> &curve, const std::variant<std::shared_ptr<HybridCvMatSpec>, std::shared_ptr<HybridPointVectorSpec>> &approxCurve, double epsilon, bool closed) override;
         double arcLength(const std::variant<std::shared_ptr<HybridCvMatSpec>, std::shared_ptr<HybridMatVectorSpec>, std::shared_ptr<HybridPointVectorSpec>> &curve, bool closed) override;

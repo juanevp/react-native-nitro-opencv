@@ -4,11 +4,12 @@ import {useEffect} from "react";
 import {StyleSheet, Text} from "react-native";
 import type {PointVector} from "react-native-nitro-opencv";
 import {
+    boxedOpenCV,
+    bufferToMat,
     ColorConversionCodes,
     ContourApproximationModes,
     MorphShapes,
     MorphTypes,
-    OpenCV,
     RetrievalModes,
 } from "react-native-nitro-opencv";
 import {Camera, useCameraDevice, useCameraPermission, useSkiaFrameProcessor} from "react-native-vision-camera";
@@ -51,7 +52,8 @@ export function DocumentDetection() {
             },
         });
 
-        const source = OpenCV.objects.bufferToMat(height, width, 3, resized);
+        const OpenCV = boxedOpenCV.unbox();
+        const source = bufferToMat(OpenCV, height, width, 3, resized);
 
         OpenCV.colorConversion.cvtColor(source, source, ColorConversionCodes.COLOR_BGR2GRAY);
 

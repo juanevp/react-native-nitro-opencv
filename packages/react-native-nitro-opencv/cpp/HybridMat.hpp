@@ -14,15 +14,17 @@ namespace margelo::nitro::nitroopencv
         cv::Mat mat;
 
     public:
-        HybridMat() = default;
-        HybridMat(cv::Mat &&mat) : HybridCvMatSpec(), mat(mat) {}
+        HybridMat() : HybridObject(TAG) {}
+        HybridMat(cv::Mat &&mat) : HybridObject(TAG), mat(mat) {}
 
     public:
-        cv::Mat* asMatPtr() {
+        cv::Mat *asMatPtr()
+        {
             return &mat;
         }
 
-        cv::Mat& asMatRef() {
+        cv::Mat &asMatRef()
+        {
             return mat;
         }
 
@@ -47,11 +49,13 @@ namespace margelo::nitro::nitroopencv
             return mat.empty();
         }
         std::shared_ptr<HybridCvSizeSpec> getSize() override;
-        std::string getBase64() override {
+        std::string getBase64() override
+        {
             return this->toBase64(MatImageFormat::JPEG);
         }
         std::string toBase64(std::optional<MatImageFormat> format) override;
-        Mat toJsValue(std::optional<MatImageFormat> format) override {
+        Mat toJsValue(std::optional<MatImageFormat> format) override
+        {
             auto size = mat.size();
             return Mat(getCols(), getRows(), Size(size.width, size.height), toBase64(format));
         }
