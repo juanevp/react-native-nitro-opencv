@@ -11,9 +11,6 @@ importers:
       '@eslint-react/eslint-plugin':
         specifier: ^1.38.3
         version: 1.38.3(eslint@9.23.0)(ts-api-utils@2.1.0(typescript@5.8.2))(typescript@5.8.2)
-      '@etclabscore/dl-github-releases':
-        specifier: ^1.2.1
-        version: 1.2.1
       '@ianvs/prettier-plugin-sort-imports':
         specifier: ^4.4.1
         version: 4.4.1(prettier@3.5.3)
@@ -41,9 +38,6 @@ importers:
       eslint-plugin-react-hooks:
         specifier: ^5.2.0
         version: 5.2.0(eslint@9.23.0)
-      extract-zip:
-        specifier: ^2.0.1
-        version: 2.0.1
       globals:
         specifier: ^16.0.0
         version: 16.0.0
@@ -170,6 +164,22 @@ importers:
         version: 5.8.2
 
   packages/react-native-nitro-opencv:
+    dependencies:
+      '@etclabscore/dl-github-releases':
+        specifier: ^1.2.1
+        version: 1.2.1
+      dotenv:
+        specifier: ^16.4.7
+        version: 16.4.7
+      extract-zip:
+        specifier: ^2.0.1
+        version: 2.0.1
+      rimraf:
+        specifier: ^6.0.1
+        version: 6.0.1
+      vite-node:
+        specifier: ^3.1.1
+        version: 3.1.1(@types/node@22.13.14)(terser@5.39.0)(yaml@2.7.0)
     devDependencies:
       '@eslint-react/eslint-plugin':
         specifier: ^1.38.3
@@ -183,9 +193,6 @@ importers:
       '@types/react':
         specifier: ^19.0.6
         version: 19.0.12
-      dotenv:
-        specifier: ^16.4.7
-        version: 16.4.7
       nitro-codegen:
         specifier: '*'
         version: 0.25.2(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli@18.0.0(typescript@5.8.2))(@types/react@19.0.12)(react@19.0.0))(react@19.0.0)
@@ -204,9 +211,6 @@ importers:
       typescript:
         specifier: ^5.8.2
         version: 5.8.2
-      vite-node:
-        specifier: ^3.1.1
-        version: 3.1.1(@types/node@22.13.14)(terser@5.39.0)(yaml@2.7.0)
 
 packages:
 

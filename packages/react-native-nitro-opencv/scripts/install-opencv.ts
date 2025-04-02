@@ -66,12 +66,13 @@ async function run() {
         const installedRelease = fs.readFileSync(releaseNameFile).toString().trim();
         if (installedRelease === releaseName) {
             console.log(`OpenCV release '${releaseName}' already installed`);
-            process.exit();
+            process.exit(0);
         } else {
             console.log("Deleting old OpenCV installation");
             rimraf.sync(installdir, {});
         }
     }
+    console.log("Installing OpenCV release");
     try {
         const result = await downloadReleases(user, repo, tmpdir, filterRelease as any, filterAsset as any, false);
         console.log(`Found assets: ${result.join(", ")}`);

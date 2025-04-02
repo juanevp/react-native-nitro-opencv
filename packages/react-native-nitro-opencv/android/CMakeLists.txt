@@ -12,6 +12,21 @@ file(TO_CMAKE_PATH "${NODE_MODULES_DIR}" NODE_MODULES_DIR)
 find_package(ReactAndroid REQUIRED CONFIG)
 find_package(fbjni REQUIRED CONFIG)
 
+file(REAL_PATH .. PACKAGE_ROOT_DIR)
+execute_process(
+  COMMAND cmd /C "npm run install-opencv" 
+  WORKING_DIRECTORY ${PACKAGE_ROOT_DIR}
+  RESULT_VARIABLE OpencvInstallResult
+  COMMAND_ECHO STDOUT
+  OUTPUT_VARIABLE OpencvInstallOutput
+  ERROR_VARIABLE OpencvInstallError
+  ECHO_OUTPUT_VARIABLE
+  ECHO_ERROR_VARIABLE
+)
+if (NOT OpencvInstallResult EQUAL 0)
+  message(FATAL_ERROR "OpenCV setup failed")
+endif()
+
 file(REAL_PATH ../opencv/OpenCV-android-sdk/sdk/native/jni OpenCV_DIR)
 message("OpenCV_DIR ${OpenCV_DIR}")
 set(OpenCV_STATIC ON)
