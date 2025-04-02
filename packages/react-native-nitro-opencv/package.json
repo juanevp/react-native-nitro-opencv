@@ -7,7 +7,8 @@
   "types": "lib/index.d.ts",
   "react-native": "src/index",
   "source": "src/index",
-   "scripts": {
+  "scripts": {
+    "postinstall": "vite-node ./scripts/install-opencv.ts",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf android/build node_modules/**/android/build lib",
     "lint": "eslint \"**/*.{js,ts,tsx}\" --fix",
@@ -20,6 +21,7 @@
     "@types/bun": "^1.2.8",
     "@types/jest": "^29.5.12",
     "@types/react": "^19.0.6",
+    "dotenv": "^16.4.7",
     "nitro-codegen": "*",
     "prettier": "^3.5.3",
     "react": "19.0.0",
