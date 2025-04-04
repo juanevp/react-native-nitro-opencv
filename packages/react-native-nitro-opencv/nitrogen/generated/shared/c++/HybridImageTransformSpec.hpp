@@ -33,6 +33,7 @@ namespace margelo::nitro::nitroopencv { class HybridCvScalarSpec; }
 #include "HybridPointVectorSpec.hpp"
 #include "DecompTypes.hpp"
 #include "HybridCvSizeSpec.hpp"
+#include <optional>
 #include "InterpolationFlags.hpp"
 #include "BorderTypes.hpp"
 #include "HybridCvScalarSpec.hpp"
@@ -69,6 +70,9 @@ namespace margelo::nitro::nitroopencv {
     public:
       // Methods
       virtual std::shared_ptr<margelo::nitro::nitroopencv::HybridCvMatSpec> getPerspectiveTransform(const std::shared_ptr<margelo::nitro::nitroopencv::HybridPointVectorSpec>& src, const std::shared_ptr<margelo::nitro::nitroopencv::HybridPointVectorSpec>& dst, DecompTypes solveMethod) = 0;
+      virtual void resize(const std::shared_ptr<margelo::nitro::nitroopencv::HybridCvMatSpec>& src, const std::shared_ptr<margelo::nitro::nitroopencv::HybridCvMatSpec>& dst, const std::shared_ptr<margelo::nitro::nitroopencv::HybridCvSizeSpec>& dsize, std::optional<double> fx, std::optional<double> fy, std::optional<InterpolationFlags> flags) = 0;
+      virtual void resizeTo(const std::shared_ptr<margelo::nitro::nitroopencv::HybridCvMatSpec>& src, const std::shared_ptr<margelo::nitro::nitroopencv::HybridCvMatSpec>& dst, double width, double height, std::optional<InterpolationFlags> flags) = 0;
+      virtual void resizeByScale(const std::shared_ptr<margelo::nitro::nitroopencv::HybridCvMatSpec>& src, const std::shared_ptr<margelo::nitro::nitroopencv::HybridCvMatSpec>& dst, double fx, double fy, std::optional<InterpolationFlags> flags) = 0;
       virtual void warpAffine(const std::shared_ptr<margelo::nitro::nitroopencv::HybridCvMatSpec>& src, const std::shared_ptr<margelo::nitro::nitroopencv::HybridCvMatSpec>& dst, const std::shared_ptr<margelo::nitro::nitroopencv::HybridCvMatSpec>& M, const std::shared_ptr<margelo::nitro::nitroopencv::HybridCvSizeSpec>& dsize) = 0;
       virtual void warpPerspective(const std::shared_ptr<margelo::nitro::nitroopencv::HybridCvMatSpec>& src, const std::shared_ptr<margelo::nitro::nitroopencv::HybridCvMatSpec>& dst, const std::shared_ptr<margelo::nitro::nitroopencv::HybridCvMatSpec>& M, const std::shared_ptr<margelo::nitro::nitroopencv::HybridCvSizeSpec>& size, InterpolationFlags flags, BorderTypes borderMode, const std::shared_ptr<margelo::nitro::nitroopencv::HybridCvScalarSpec>& borderValue) = 0;
 

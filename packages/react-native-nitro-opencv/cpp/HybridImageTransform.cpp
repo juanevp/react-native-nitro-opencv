@@ -16,6 +16,32 @@ namespace margelo::nitro::nitroopencv
         return std::make_shared<HybridMat>(std::move(result));
     }
 
+    void HybridImageTransform::resize(const std::shared_ptr<HybridCvMatSpec> &src, const std::shared_ptr<HybridCvMatSpec> &dst,
+                                      const std::shared_ptr<HybridCvSizeSpec> &dsize, std::optional<double> fx, std::optional<double> fy,
+                                      std::optional<InterpolationFlags> flags)
+    {
+        auto &src_ = asMatRef(src);
+        auto &dst_ = asMatRef(dst);
+        auto &dsize_ = asSizeRef(dsize);
+        cv::resize(src_, dst_, dsize_, fx.value_or(0), fy.value_or(0), (int)flags.value_or(InterpolationFlags::INTER_LINEAR));
+    }
+
+    void HybridImageTransform::resizeTo(const std::shared_ptr<HybridCvMatSpec> &src, const std::shared_ptr<HybridCvMatSpec> &dst, double width, double height,
+                                        std::optional<InterpolationFlags> flags)
+    {
+        auto &src_ = asMatRef(src);
+        auto &dst_ = asMatRef(dst);
+        cv::resize(src_, dst_, cv::Size(width, height), 0, 0, (int)flags.value_or(InterpolationFlags::INTER_LINEAR));
+    }
+
+    void HybridImageTransform::resizeByScale(const std::shared_ptr<HybridCvMatSpec> &src, const std::shared_ptr<HybridCvMatSpec> &dst, double fx, double fy,
+                                             std::optional<InterpolationFlags> flags)
+    {
+        auto &src_ = asMatRef(src);
+        auto &dst_ = asMatRef(dst);
+        cv::resize(src_, dst_, cv::Size(), fx, fy, (int)flags.value_or(InterpolationFlags::INTER_LINEAR));
+    }
+
     void HybridImageTransform::warpAffine(const std::shared_ptr<HybridCvMatSpec> &src, const std::shared_ptr<HybridCvMatSpec> &dst,
                                           const std::shared_ptr<HybridCvMatSpec> &M, const std::shared_ptr<HybridCvSizeSpec> &dsize)
     {

@@ -15,6 +15,9 @@ namespace margelo::nitro::nitroopencv {
     // load custom methods/properties
     registerHybrids(this, [](Prototype& prototype) {
       prototype.registerHybridMethod("getPerspectiveTransform", &HybridImageTransformSpec::getPerspectiveTransform);
+      prototype.registerHybridMethod("resize", &HybridImageTransformSpec::resize);
+      prototype.registerHybridMethod("resizeTo", &HybridImageTransformSpec::resizeTo);
+      prototype.registerHybridMethod("resizeByScale", &HybridImageTransformSpec::resizeByScale);
       prototype.registerHybridMethod("warpAffine", &HybridImageTransformSpec::warpAffine);
       prototype.registerHybridMethod("warpPerspective", &HybridImageTransformSpec::warpPerspective);
     });
