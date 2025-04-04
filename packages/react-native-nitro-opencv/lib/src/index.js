@@ -8,6 +8,7 @@ export * from "./specs/functions-core.nitro";
 export * from "./specs/functions-drawing.nitro";
 export * from "./specs/functions-feature.nitro";
 export * from "./specs/functions-image-filtering.nitro";
+export * from "./specs/functions-image-io.nitro";
 export * from "./specs/functions-image-transform.nitro";
 export * from "./specs/functions-misc.nitro";
 export * from "./specs/functions-object-detection.nitro";
@@ -29,6 +30,7 @@ const shape = NitroModules.createHybridObject("Shape");
 const objectDetection = NitroModules.createHybridObject("ObjectDetection");
 const misc = NitroModules.createHybridObject("Misc");
 const imageTransform = NitroModules.createHybridObject("ImageTransform");
+const imageIo = NitroModules.createHybridObject("ImageIo");
 const imageFiltering = NitroModules.createHybridObject("ImageFiltering");
 const feature = NitroModules.createHybridObject("Feature");
 const drawing = NitroModules.createHybridObject("Drawing");
@@ -39,6 +41,7 @@ const boxedShape = NitroModules.box(shape);
 const boxedObjectDetection = NitroModules.box(objectDetection);
 const boxedMisc = NitroModules.box(misc);
 const boxedImageTransform = NitroModules.box(imageTransform);
+const boxedImageIo = NitroModules.box(imageIo);
 const boxedImageFiltering = NitroModules.box(imageFiltering);
 const boxedFeature = NitroModules.box(feature);
 const boxedDrawing = NitroModules.box(drawing);
@@ -51,6 +54,7 @@ export const OpenCV = {
     misc,
     imageTransform,
     imageFiltering,
+    imageIo,
     feature,
     drawing,
 };
@@ -66,6 +70,7 @@ export const boxedOpenCV = {
             misc: boxedMisc.unbox(),
             imageTransform: boxedImageTransform.unbox(),
             imageFiltering: boxedImageFiltering.unbox(),
+            imageIo: boxedImageIo.unbox(),
             feature: boxedFeature.unbox(),
             drawing: boxedDrawing.unbox(),
         };

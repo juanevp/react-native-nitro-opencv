@@ -5,6 +5,7 @@ import type {Core} from "./specs/functions-core.nitro";
 import type {Drawing} from "./specs/functions-drawing.nitro";
 import type {Feature} from "./specs/functions-feature.nitro";
 import type {ImageFiltering} from "./specs/functions-image-filtering.nitro";
+import type {ImageIo} from "./specs/functions-image-io.nitro";
 import type {ImageTransform} from "./specs/functions-image-transform.nitro";
 import type {Misc} from "./specs/functions-misc.nitro";
 import type {ObjectDetection} from "./specs/functions-object-detection.nitro";
@@ -22,6 +23,7 @@ export * from "./specs/functions-core.nitro";
 export * from "./specs/functions-drawing.nitro";
 export * from "./specs/functions-feature.nitro";
 export * from "./specs/functions-image-filtering.nitro";
+export * from "./specs/functions-image-io.nitro";
 export * from "./specs/functions-image-transform.nitro";
 export * from "./specs/functions-misc.nitro";
 export * from "./specs/functions-object-detection.nitro";
@@ -49,6 +51,7 @@ const shape = NitroModules.createHybridObject<Shape>("Shape");
 const objectDetection = NitroModules.createHybridObject<ObjectDetection>("ObjectDetection");
 const misc = NitroModules.createHybridObject<Misc>("Misc");
 const imageTransform = NitroModules.createHybridObject<ImageTransform>("ImageTransform");
+const imageIo = NitroModules.createHybridObject<ImageIo>("ImageIo");
 const imageFiltering = NitroModules.createHybridObject<ImageFiltering>("ImageFiltering");
 const feature = NitroModules.createHybridObject<Feature>("Feature");
 const drawing = NitroModules.createHybridObject<Drawing>("Drawing");
@@ -60,6 +63,7 @@ const boxedShape = NitroModules.box(shape);
 const boxedObjectDetection = NitroModules.box(objectDetection);
 const boxedMisc = NitroModules.box(misc);
 const boxedImageTransform = NitroModules.box(imageTransform);
+const boxedImageIo = NitroModules.box(imageIo);
 const boxedImageFiltering = NitroModules.box(imageFiltering);
 const boxedFeature = NitroModules.box(feature);
 const boxedDrawing = NitroModules.box(drawing);
@@ -73,6 +77,7 @@ export const OpenCV = {
     misc,
     imageTransform,
     imageFiltering,
+    imageIo,
     feature,
     drawing,
 } as const;
@@ -89,6 +94,7 @@ export const boxedOpenCV = {
             misc: boxedMisc.unbox(),
             imageTransform: boxedImageTransform.unbox(),
             imageFiltering: boxedImageFiltering.unbox(),
+            imageIo: boxedImageIo.unbox(),
             feature: boxedFeature.unbox(),
             drawing: boxedDrawing.unbox(),
         } as const;
