@@ -21,6 +21,8 @@ namespace margelo::nitro::nitroopencv {
       prototype.registerHybridMethod("createPointVectorOfVectors", &HybridObjectsSpec::createPointVectorOfVectors);
       prototype.registerHybridMethod("createPoint2f", &HybridObjectsSpec::createPoint2f);
       prototype.registerHybridMethod("createPoint2fVector", &HybridObjectsSpec::createPoint2fVector);
+      prototype.registerHybridMethod("createRange", &HybridObjectsSpec::createRange);
+      prototype.registerHybridMethod("createRangeAll", &HybridObjectsSpec::createRangeAll);
       prototype.registerHybridMethod("createRect", &HybridObjectsSpec::createRect);
       prototype.registerHybridMethod("createRectVector", &HybridObjectsSpec::createRectVector);
       prototype.registerHybridMethod("createRotatedRect", &HybridObjectsSpec::createRotatedRect);

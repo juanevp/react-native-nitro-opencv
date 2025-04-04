@@ -34,6 +34,9 @@
     "Point2fVector": {
       "cpp": "HybridPoint2fVector"
     },
+    "CvRange": {
+      "cpp": "HybridRange"
+    },
     "CvRect": {
       "cpp": "HybridRect"
     },

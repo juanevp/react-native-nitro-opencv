@@ -4,6 +4,7 @@ import type { MatVector } from "./mat-vector.nitro";
 import type { CvMat } from "./mat.nitro";
 import type { Point2fVector, PointVector, PointVectorOfVectors } from "./point-vector.nitro";
 import type { CvPoint, CvPoint2f } from "./point.nitro";
+import type { CvRange } from "./range.nitro";
 import type { RectVector } from "./rect-vector.nitro";
 import type { CvRect } from "./rect.nitro";
 import type { CvRotatedRect } from "./rotated-rect.nitro";
@@ -22,6 +23,8 @@ export interface Objects extends HybridObject<{
     createPointVectorOfVectors(): PointVectorOfVectors;
     createPoint2f(x: number, y: number): CvPoint2f;
     createPoint2fVector(): Point2fVector;
+    createRange(start: number, end: number): CvRange;
+    createRangeAll(): CvRange;
     createRect(x: number, y: number, width: number, height: number): CvRect;
     createRectVector(): RectVector;
     createRotatedRect(centerX: number, centerY: number, width: number, height: number, angle: number): CvRotatedRect;

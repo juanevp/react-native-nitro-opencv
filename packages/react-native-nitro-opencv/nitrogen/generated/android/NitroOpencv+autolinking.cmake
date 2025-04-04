@@ -32,6 +32,7 @@ target_sources(
   ../nitrogen/generated/shared/c++/HybridDrawingSpec.cpp
   ../nitrogen/generated/shared/c++/HybridFeatureSpec.cpp
   ../nitrogen/generated/shared/c++/HybridImageFilteringSpec.cpp
+  ../nitrogen/generated/shared/c++/HybridImageIoSpec.cpp
   ../nitrogen/generated/shared/c++/HybridImageTransformSpec.cpp
   ../nitrogen/generated/shared/c++/HybridMiscSpec.cpp
   ../nitrogen/generated/shared/c++/HybridObjectDetectionSpec.cpp
@@ -44,6 +45,7 @@ target_sources(
   ../nitrogen/generated/shared/c++/HybridPointVectorOfVectorsSpec.cpp
   ../nitrogen/generated/shared/c++/HybridCvPointSpec.cpp
   ../nitrogen/generated/shared/c++/HybridCvPoint2fSpec.cpp
+  ../nitrogen/generated/shared/c++/HybridCvRangeSpec.cpp
   ../nitrogen/generated/shared/c++/HybridRectVectorSpec.cpp
   ../nitrogen/generated/shared/c++/HybridCvRectSpec.cpp
   ../nitrogen/generated/shared/c++/HybridCvRotatedRectSpec.cpp

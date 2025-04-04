@@ -29,6 +29,8 @@ namespace margelo::nitro::nitroopencv { class HybridPointVectorOfVectorsSpec; }
 namespace margelo::nitro::nitroopencv { class HybridCvPoint2fSpec; }
 // Forward declaration of `HybridPoint2fVectorSpec` to properly resolve imports.
 namespace margelo::nitro::nitroopencv { class HybridPoint2fVectorSpec; }
+// Forward declaration of `HybridCvRangeSpec` to properly resolve imports.
+namespace margelo::nitro::nitroopencv { class HybridCvRangeSpec; }
 // Forward declaration of `HybridCvRectSpec` to properly resolve imports.
 namespace margelo::nitro::nitroopencv { class HybridCvRectSpec; }
 // Forward declaration of `HybridRectVectorSpec` to properly resolve imports.
@@ -55,6 +57,7 @@ namespace NitroModules { class ArrayBuffer; }
 #include "HybridPointVectorOfVectorsSpec.hpp"
 #include "HybridCvPoint2fSpec.hpp"
 #include "HybridPoint2fVectorSpec.hpp"
+#include "HybridCvRangeSpec.hpp"
 #include "HybridCvRectSpec.hpp"
 #include "HybridRectVectorSpec.hpp"
 #include "HybridCvRotatedRectSpec.hpp"
@@ -102,6 +105,8 @@ namespace margelo::nitro::nitroopencv {
       virtual std::shared_ptr<margelo::nitro::nitroopencv::HybridPointVectorOfVectorsSpec> createPointVectorOfVectors() = 0;
       virtual std::shared_ptr<margelo::nitro::nitroopencv::HybridCvPoint2fSpec> createPoint2f(double x, double y) = 0;
       virtual std::shared_ptr<margelo::nitro::nitroopencv::HybridPoint2fVectorSpec> createPoint2fVector() = 0;
+      virtual std::shared_ptr<margelo::nitro::nitroopencv::HybridCvRangeSpec> createRange(double start, double end) = 0;
+      virtual std::shared_ptr<margelo::nitro::nitroopencv::HybridCvRangeSpec> createRangeAll() = 0;
       virtual std::shared_ptr<margelo::nitro::nitroopencv::HybridCvRectSpec> createRect(double x, double y, double width, double height) = 0;
       virtual std::shared_ptr<margelo::nitro::nitroopencv::HybridRectVectorSpec> createRectVector() = 0;
       virtual std::shared_ptr<margelo::nitro::nitroopencv::HybridCvRotatedRectSpec> createRotatedRect(double centerX, double centerY, double width, double height, double angle) = 0;

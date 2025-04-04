@@ -22,6 +22,7 @@
 #include "HybridPointVectorOfVectors.hpp"
 #include "HybridPoint2f.hpp"
 #include "HybridPoint2fVector.hpp"
+#include "HybridRange.hpp"
 #include "HybridRect.hpp"
 #include "HybridRotatedRect.hpp"
 #include "HybridRectVector.hpp"
@@ -111,6 +112,15 @@ int initialize(JavaVM* vm) {
                       "The HybridObject \"HybridPoint2fVector\" is not default-constructible! "
                       "Create a public constructor that takes zero arguments to be able to autolink this HybridObject.");
         return std::make_shared<HybridPoint2fVector>();
+      }
+    );
+    HybridObjectRegistry::registerHybridObjectConstructor(
+      "CvRange",
+      []() -> std::shared_ptr<HybridObject> {
+        static_assert(std::is_default_constructible_v<HybridRange>,
+                      "The HybridObject \"HybridRange\" is not default-constructible! "
+                      "Create a public constructor that takes zero arguments to be able to autolink this HybridObject.");
+        return std::make_shared<HybridRange>();
       }
     );
     HybridObjectRegistry::registerHybridObjectConstructor(

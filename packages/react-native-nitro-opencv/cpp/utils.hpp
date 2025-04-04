@@ -1,11 +1,13 @@
 #include <opencv2/core/mat.hpp>
 
 #include "HybridCvMatSpec.hpp"
-#include "HybridCvRectSpec.hpp"
 #include "HybridCvPointSpec.hpp"
+#include "HybridCvRangeSpec.hpp"
+#include "HybridCvRectSpec.hpp"
 #include "HybridCvScalarSpec.hpp"
 #include "HybridCvSizeSpec.hpp"
 #include "HybridMat.hpp"
+#include "HybridRange.hpp"
 #include "HybridRect.hpp"
 #include "HybridPoint.hpp"
 #include "HybridScalar.hpp"
@@ -26,6 +28,10 @@ namespace margelo::nitro::nitroopencv {
 
     inline std::vector<cv::Mat>& asMatVectorRef(std::shared_ptr<HybridMatVectorSpec> ptr) {
         return std::reinterpret_pointer_cast<HybridMatVector>(ptr)->asMatVectorRef();
+    }
+
+    inline cv::Range& asRangeRef(std::shared_ptr<HybridCvRangeSpec> ptr) {
+        return std::reinterpret_pointer_cast<HybridRange>(ptr)->asRangeRef();
     }
 
     inline cv::Rect& asRectRef(std::shared_ptr<HybridCvRectSpec> ptr) {

@@ -20,6 +20,8 @@ namespace margelo::nitro::nitroopencv
         std::shared_ptr<HybridPointVectorOfVectorsSpec> createPointVectorOfVectors() override;
         std::shared_ptr<HybridCvPoint2fSpec> createPoint2f(double x, double y) override;
         std::shared_ptr<HybridPoint2fVectorSpec> createPoint2fVector() override;
+        std::shared_ptr<HybridCvRangeSpec> createRange(double start, double end) override;
+        std::shared_ptr<HybridCvRangeSpec> createRangeAll() override;
         std::shared_ptr<HybridCvRectSpec> createRect(double x, double y, double width, double height) override;
         std::shared_ptr<HybridRectVectorSpec> createRectVector() override;
         std::shared_ptr<HybridCvRotatedRectSpec> createRotatedRect(double centerX, double centerY, double width, double height, double angle) override;

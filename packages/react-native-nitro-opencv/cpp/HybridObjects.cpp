@@ -6,6 +6,7 @@
 #include "ConvertImage.hpp"
 #include "HybridMat.hpp"
 #include "HybridPoint.hpp"
+#include "HybridRange.hpp"
 #include "HybridRect.hpp"
 #include "HybridRotatedRect.hpp"
 #include "HybridScalar.hpp"
@@ -63,6 +64,16 @@ namespace margelo::nitro::nitroopencv
     std::shared_ptr<HybridPoint2fVectorSpec> HybridObjects::createPoint2fVector()
     {
         return std::make_shared<HybridPoint2fVector>();
+    }
+
+    std::shared_ptr<HybridCvRangeSpec> HybridObjects::createRange(double start, double end)
+    {
+        return std::make_shared<HybridRange>(cv::Range(start, end));
+    }
+
+    std::shared_ptr<HybridCvRangeSpec> HybridObjects::createRangeAll()
+    {
+        return std::make_shared<HybridRange>(cv::Range::all());
     }
 
     std::shared_ptr<HybridCvRectSpec> HybridObjects::createRect(double x, double y, double width, double height)
