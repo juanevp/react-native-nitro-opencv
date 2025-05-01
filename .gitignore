@@ -104,3 +104,4 @@ android/keystores/debug.keystore
 
 OpenCV-android-sdk/
 opencv2.framework/
+packages/react-native-nitro-opencv/opencv/
