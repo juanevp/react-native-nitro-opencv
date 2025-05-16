@@ -38,6 +38,7 @@
 #include "HybridImageFiltering.hpp"
 #include "HybridFeature.hpp"
 #include "HybridDrawing.hpp"
+#include "HybridImageIo.hpp"
 
 namespace margelo::nitro::nitroopencv {
 
@@ -256,6 +257,15 @@ int initialize(JavaVM* vm) {
                       "The HybridObject \"HybridDrawing\" is not default-constructible! "
                       "Create a public constructor that takes zero arguments to be able to autolink this HybridObject.");
         return std::make_shared<HybridDrawing>();
+      }
+    );
+    HybridObjectRegistry::registerHybridObjectConstructor(
+      "ImageIo",
+      []() -> std::shared_ptr<HybridObject> {
+        static_assert(std::is_default_constructible_v<HybridImageIo>,
+                      "The HybridObject \"HybridImageIo\" is not default-constructible! "
+                      "Create a public constructor that takes zero arguments to be able to autolink this HybridObject.");
+        return std::make_shared<HybridImageIo>();
       }
     );
   });

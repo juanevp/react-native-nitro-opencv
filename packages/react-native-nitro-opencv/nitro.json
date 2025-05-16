@@ -81,6 +81,9 @@
     },
     "Drawing": {
       "cpp": "HybridDrawing"
+    },
+    "ImageIo": {
+      "cpp": "HybridImageIo"
     }
   },
   "ignorePaths": [
