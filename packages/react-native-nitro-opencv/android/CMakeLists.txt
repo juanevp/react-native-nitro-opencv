@@ -13,16 +13,40 @@ find_package(ReactAndroid REQUIRED CONFIG)
 find_package(fbjni REQUIRED CONFIG)
 
 file(REAL_PATH .. PACKAGE_ROOT_DIR)
-execute_process(
-  COMMAND cmd /C "npm run install-opencv" 
-  WORKING_DIRECTORY ${PACKAGE_ROOT_DIR}
-  RESULT_VARIABLE OpencvInstallResult
-  COMMAND_ECHO STDOUT
-  OUTPUT_VARIABLE OpencvInstallOutput
-  ERROR_VARIABLE OpencvInstallError
-  ECHO_OUTPUT_VARIABLE
-  ECHO_ERROR_VARIABLE
-)
+CMAKE_PATH(APPEND INSTALLOPENCVLOG ${PACKAGE_ROOT_DIR} "install-opencv.log")
+message(STATUS "INSTALLOPENCVLOG: ${INSTALLOPENCVLOG}")
+if(CMAKE_HOST_WIN32)
+  execute_process(
+    COMMAND cmd /C "pnpm run install-opencv >${INSTALLOPENCVLOG}" 
+    WORKING_DIRECTORY ${PACKAGE_ROOT_DIR}
+    RESULT_VARIABLE OpencvInstallResult
+    OUTPUT_VARIABLE OpencvInstallOutput
+    ERROR_VARIABLE OpencvInstallError  
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    ERROR_STRIP_TRAILING_WHITESPACE
+  )
+elseif(CMAKE_HOST_UNIX)
+  execute_process(
+    COMMAND sh -c "pnpm run install-opencv >${INSTALLOPENCVLOG}" 
+    WORKING_DIRECTORY ${PACKAGE_ROOT_DIR}
+    RESULT_VARIABLE OpencvInstallResult
+    OUTPUT_VARIABLE OpencvInstallOutput
+    ERROR_VARIABLE OpencvInstallError  
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    ERROR_STRIP_TRAILING_WHITESPACE
+  )
+else()
+    message(FATAL_ERROR "Unsupported operating system")
+endif()
+
+if(OpencvInstallOutput)
+    message(STATUS "pnpm output:\n${OpencvInstallOutput}")
+endif()
+
+if(OpencvInstallError)
+    message(STATUS "pnpm errors:\n${OpencvInstallError}")
+endif()
+
 if (NOT OpencvInstallResult EQUAL 0)
   message(FATAL_ERROR "OpenCV setup failed")
 endif()
